@@ -38,9 +38,11 @@ int main()
     // 0 0 1 0 0
     printf("     Jogo Batalha Naval\n\n");
 
-    int tabuleiro[10][10];         // Matriz que representa um tabuleiro 10 x 10
-    int navio01[3] = {3, 3, 3};    // Declarando e iniciando o navio 01
+    int tabuleiro[10][10];      // Matriz que representa um tabuleiro 10 x 10
+    int navio01[3] = {3, 3, 3}; // Declarando e iniciando o navio 01
     int navio02[3] = {3, 3, 3}; // Declarando e iniciando o navio 02
+    int navio03[3] = {3, 3, 3}; // Declarando e iniciando o navio 03 - Nível aventureiro
+    int navio04[3] = {3, 3, 3}; // Declarando e iniciando o navio 04 - Nível aventureiro
 
     for (int i = 0; i < 10; i++)
     { // Loop para inicializar os valores do tabuleiro com 0
@@ -57,13 +59,55 @@ int main()
     // Insere o navio01 horizontalmente na 7º linha do tabuleiro
     for (int i = 2, j = 0; i < 5 && j < 3; i++, j++)
     { // A variável i manipula a posição da matriz e a j representa as posições do navio01
-        tabuleiro[6][i] = navio01[j];
+        if (tabuleiro[6][i] == 0)
+        { // Valida se o navio não está se sobrepondo a outro, pois caso o valor da matrix seja diferente de 0 já existe um navio nesta posição
+            tabuleiro[6][i] = navio01[j];
+        }
+        else
+        {
+            printf("Os navios estão se sobrepondo");
+        }
     }
 
     // Insere o navio02 verticalmente na 8º coluna do tabuleiro
     for (int i = 2, j = 0; i < 5 && j < 3; i++, j++)
     { // A variável i manipula a posição da matriz e a j representa as posições do navio02
-        tabuleiro[i][7] = navio02[j];
+        if (tabuleiro[i][7] == 0)
+        { // Validando a sobreposição de navios
+            tabuleiro[i][7] = navio02[j];
+        }
+        else
+        {
+            printf("Os navios estão se sobrepondo");
+        }
+    }
+
+    // Insere o navio03 diagonalmente no tabuleiro
+    for (int i = 0; i < 3; i++)
+    {
+
+        if (tabuleiro[i + 1][4 - i] == 0)
+        { // Validando a sobreposição de navios
+            tabuleiro[i + 1][4 - i] = navio03[i];
+        }
+        else
+        {
+            printf("Os navios estão se sobrepondo");
+        }
+    }
+
+    // Insere o navio04 diagonalmente no tabuleiro
+    for (int i = 0; i < 3; i++)
+    {
+
+        if (tabuleiro[i + 7][6 + i] == 0)
+        { // Validando a sobreposição de navios
+            tabuleiro[i + 7][6 + i] = navio04[i];
+        }
+        else
+        {
+            printf("Os navios estão se sobrepondo");
+        }
     }
 
     // Loop para exibir o tabuleiro com os navios
