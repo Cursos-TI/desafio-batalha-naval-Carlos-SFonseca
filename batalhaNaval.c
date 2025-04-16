@@ -4,6 +4,96 @@
 // Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
 // Siga os comentários para implementar cada parte do desafio.
 
+void PosicionaNavioHorizontal(int _tabuleiro[][10], int navio[], int indexlinha, int indexColuna, int numNavio)
+{
+    int sobreposicao = 0; // verifica se já exite navio nesta posição
+
+    for (int i = indexColuna, j = 0; i < indexColuna + 3 && j < 3; i++, j++)
+    {
+        if (!_tabuleiro[indexlinha][i] == 0)
+        {
+            printf("Erro ao inserir o navio Nº: %d, já existe um navio nesta posição\n", numNavio);
+            sobreposicao = 1;
+            break;
+        }
+    }
+
+    if (sobreposicao == 0)
+    {
+        for (int i = indexColuna, j = 0; i < indexColuna + 3 && j < 3; i++, j++)
+        { // A variável i manipula a posição da matriz e a j representa as posições do navio
+            if (indexColuna + 2 > 9)
+            { // Valida se o navio está nos limites do tabuleiro
+                printf("Erro ao inserir o navio Nº: %d, fora dos limites do tabuleiro\n", numNavio);
+                break;
+            }
+            _tabuleiro[indexlinha][i] = navio[j];
+        }
+    }
+}
+
+void PosicionaNavioVertical(int _tabuleiro[][10], int navio[], int indexlinha, int indexColuna, int numNavio)
+{
+    int sobreposicao = 0; // verifica se já exite navio nesta posição
+
+    for (int i = indexlinha, j = 0; i < indexlinha + 3 && j < 3; i++, j++)
+    {
+        if (!_tabuleiro[i][indexColuna] == 0)
+        {
+            printf("Erro ao inserir o navio Nº: %d, já existe um navio nesta posição\n", numNavio);
+            sobreposicao = 1;
+            break;
+        }
+    }
+
+    if (sobreposicao == 0)
+    {
+        for (int i = indexlinha, j = 0; i < indexlinha + 3 && j < 3; i++, j++)
+        { // A variável i manipula a posição da matriz e a j representa as posições do navio
+            if (indexlinha + 2 > 9)
+            { // Valida se o navio está nos limites do tabuleiro
+                printf("Erro ao inserir o navio Nº: %d, fora dos limites do tabuleiro\n", numNavio);
+                break;
+            }
+            _tabuleiro[i][indexColuna] = navio[j];
+        }
+    }
+}
+
+
+void PosicionaNavioDiagonal(int _tabuleiro[][10], int navio[], int indexlinha, int indexColuna,int direcao, int numNavio)
+{ 
+    int sobreposicao = 0; // verifica se já exite navio nesta posição
+    
+
+    for (int i = 0, j = 0; i < 3; i++)
+    {
+        int coluna = (direcao!= 1)?indexColuna+i:indexColuna-i;// o parametro direcao determina a direção da diagonal, se igual à 1 é para a direita se diferente de 1 é para a esquerda
+        int linha = i+indexlinha;
+        if (_tabuleiro[linha][coluna] != 0)
+        {
+            printf("Erro ao inserir o navio Nº: %d, já existe um navio nesta posição\n", numNavio);
+            sobreposicao = 1;
+            break;
+        }
+    }
+
+    if (sobreposicao == 0)
+    {
+        for (int i = 0, j = 0; i < 3; i++)
+        { // A variável i manipula a posição da matriz e a j representa as posições do navio
+            int coluna = (direcao!= 1)?indexColuna+i:indexColuna-i;
+            int linha = i+indexlinha;
+            if (indexlinha + 2 > 9 || (direcao ==1 && indexColuna -2 <0)||(direcao !=1 && indexColuna +2 >9) )
+            { // Valida se o navio está nos limites do tabuleiro
+                printf("Erro ao inserir o navio Nº: %d, fora dos limites do tabuleiro\n", numNavio);
+                break;
+            }
+            _tabuleiro[linha][coluna] = navio[i];
+        }
+    }
+}
+
 int main()
 {
     // Nível Novato - Posicionamento dos Navios
@@ -57,72 +147,47 @@ int main()
     // Inserir os navios no tabuleiro:
 
     // Insere o navio01 horizontalmente na 7º linha do tabuleiro
-    for (int i = 2, j = 0; i < 5 && j < 3; i++, j++)
-    { // A variável i manipula a posição da matriz e a j representa as posições do navio01
-        if (tabuleiro[6][i] == 0)
-        { // Valida se o navio não está se sobrepondo a outro, pois caso o valor da matrix seja diferente de 0 já existe um navio nesta posição
-            tabuleiro[6][i] = navio01[j];
-        }
-        else
-        {
-            printf("Os navios estão se sobrepondo");
-        }
-    }
+    PosicionaNavioHorizontal(&tabuleiro, navio01, 6, 4, 1);
 
     // Insere o navio02 verticalmente na 8º coluna do tabuleiro
-    for (int i = 2, j = 0; i < 5 && j < 3; i++, j++)
-    { // A variável i manipula a posição da matriz e a j representa as posições do navio02
-        if (tabuleiro[i][7] == 0)
-        { // Validando a sobreposição de navios
-            tabuleiro[i][7] = navio02[j];
-        }
-        else
-        {
-            printf("Os navios estão se sobrepondo");
-        }
-    }
+    PosicionaNavioVertical(&tabuleiro, navio02, 2, 7, 2);
 
     // Insere o navio03 diagonalmente no tabuleiro
-    for (int i = 0; i < 3; i++)
-    {
-
-        if (tabuleiro[i + 1][4 - i] == 0)
-        { // Validando a sobreposição de navios
-            tabuleiro[i + 1][4 - i] = navio03[i];
-        }
-        else
-        {
-            printf("Os navios estão se sobrepondo");
-        }
-    }
+    PosicionaNavioDiagonal(&tabuleiro,navio03,1,4,1,3);
 
     // Insere o navio04 diagonalmente no tabuleiro
-    for (int i = 0; i < 3; i++)
-    {
-
-        if (tabuleiro[i + 7][6 + i] == 0)
-        { // Validando a sobreposição de navios
-            tabuleiro[i + 7][6 + i] = navio04[i];
-        }
-        else
-        {
-            printf("Os navios estão se sobrepondo");
-        }
-    }
+    PosicionaNavioDiagonal(&tabuleiro,navio04,7,4,0,4);
+    
 
     // Loop para exibir o tabuleiro com os navios
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i <= 10; i++)
     {
+        if (i > 0)
+        {
+            printf("  %d", i - 1); // Cria os índices de linha do tabuleiro
+        }
 
         for (int j = 0; j < 10; j++)
         {
 
             if (j == 0)
             {
-                printf("     "); // Inicia cada linha com uma sequencia de espaços em branco para melhorar a visibilidade
+                printf("  "); // Inicia cada linha com uma sequencia de espaços em branco para melhorar a visibilidade
             }
 
-            printf("%d ", tabuleiro[i][j]);
+            if (i == 0)
+            {// Cria os índices de coluna do tabuleiro
+                if (j == 0)
+                {
+                    printf("   "); // Alinha os índices de coluna com o tabuleiro
+                }
+                printf("%d ", j);
+            }
+            else
+            {
+
+                printf("%d ", tabuleiro[i - 1][j]);
+            }
         }
 
         printf("\n");
